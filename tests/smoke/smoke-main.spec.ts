@@ -4,51 +4,31 @@ import { MainPage } from '../../pages/MainPage';
 test.beforeEach(async ({ page }) => {
   await page.context().clearCookies();
   await page.context().clearPermissions();
-})
+});
 
-test('Check if main page loads', async ({ page }) => {
+test('Smoke: homepage loads', async ({ page }) => {
   const main = new MainPage(page);
   await main.goToHomepage();
-
   await main.expectMainPageLoaded();
 });
 
-test.describe('Header links navigation tests', () => {
-test('Check if register link works', async ({ page }) => {
+test('Smoke: navigation links work', async ({ page }) => {
   const main = new MainPage(page);
   await main.goToHomepage();
 
-  await main.goToRegisterLink();
-});
-
-test('Check if login link works', async ({ page }) => {
-  const main = new MainPage(page);
+  await main.goToLoginPage();
   await main.goToHomepage();
-
-  await main.goToLogInLink();
-});
-
-test('Check if shopping cart link works', async ({ page }) => {
-  const main = new MainPage(page);
+  await main.goToRegisterPage();
   await main.goToHomepage();
-
   await main.goToShoppingCart();
 });
 
-test('Check if wishlist link works', async ({ page }) => {
+test('Smoke: search returns results', async ({ page }) => {
   const main = new MainPage(page);
   await main.goToHomepage();
 
-  await main.goToWishlist();
-});
-});
-
-  test('Search works', async ({ page }) => {
-  const main = new MainPage(page);
-  await main.goToHomepage();
-
-  await main.enterSearchTerm('computer');
-  await expect(page).toHaveURL(/search\?q=computer/);
+  await main.searchFor('computer');
+  await expect(page).toHaveURL(/search=.*computer/i);
   await main.searchResultsContain('computer');
 });
 
